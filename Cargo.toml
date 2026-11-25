@@ -1,0 +1,33 @@
+[package]
+name = "hangar"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+eframe = { version = "0.37.0", default-features = false, features = ["glow", "default_fonts", "clipboard"] }
+egui_extras = { version = "0.37.0", default-features = false }
+flate2 = "1.1.11"
+libc = "0.2.191"
+regex = "1.13.2"
+rfd = "0.18.0"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+sha1 = "0.11.0"
+sha2 = "0.11.1"
+tar = "0.4.46"
+ureq = { version = "3.5.2", default-features = false, features = ["rustls"] }
+zip = { version = "9.8.2", default-features = false, features = ["deflate-flate2-zlib-rs"] }
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+strip = true
+panic = "abort"
+
+[profile.dev.package."*"]
+opt-level = 2
+
+[lints.clippy]
+unwrap_used = "warn"
+expect_used = "warn"

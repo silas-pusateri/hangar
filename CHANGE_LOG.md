@@ -1,5 +1,10 @@
 # Change log
 
+## Unreleased
+
+### Changed
+- The Play button is green with white text, in the light and the dark theme.
+
 ## 0.1.0 - 2026-11-24
 
 First version of Hangar, a mod manager for Kerbal Space Program 1. It runs

@@ -789,7 +789,9 @@ impl App {
         let has = self.session.is_some() && !self.busy();
         let playing = self.play.running.load(Ordering::Relaxed);
         let play_text = if playing { "Playing" } else { "Play" };
-        if ui.add_enabled(has && !playing, egui::Button::new(play_text)).on_hover_text("Launch KSP").clicked() {
+        // Green with white text, in the light and the dark theme.
+        let play = egui::Button::new(RichText::new(play_text).strong().color(Color32::WHITE)).fill(GREEN);
+        if ui.add_enabled(has && !playing, play).on_hover_text("Launch KSP").clicked() {
             self.launch_game(false);
         }
         let n = self.pending.len();

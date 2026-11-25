@@ -1,33 +1,5 @@
 # Change log
 
-## Unreleased
-
-### Added
-- Text size setting for the window: a View menu (Larger text, Smaller text,
-  Normal text size, and a list from 80% to 200%) and the keys Cmd+=, Cmd+-
-  and Cmd+0. Hangar saves the size in `config.json` (`Hangar.text_size`) and
-  uses it again at the next start.
-
-### Changed
-- Mod list column order: Downloads now comes after Latest version, and Max
-  game version is the last column.
-- The window works at large text sizes: Apply changes and Play stay at the
-  right of the toolbar, and the filter and search box go to a second row when
-  the toolbar is too narrow. Dialogs are never larger than the main window,
-  their lists get shorter in a short window, and wide content scrolls.
-
-### Fixed
-- When another Hangar window or CKAN has the game folder open, the window no
-  longer stops at an error and the Instances dialog. It shows that the
-  instance is in use, tries again every 2 seconds, and opens the instance when
-  the other program closes ("Try now" and "Stop waiting" buttons). The lock
-  message now names the program that holds the lock, for example "another
-  Hangar window (process 123)".
-- A setting changed in the window while an instance opened (text size, shown
-  columns) no longer goes back to the old value when the instance is open.
-- A bad `text_size` value in `config.json` (for example 1.5 or "big") no
-  longer resets all the other Hangar settings.
-
 ## 0.1.0 - 2026-11-24
 
 First version of Hangar, a mod manager for Kerbal Space Program 1. It runs
@@ -50,6 +22,9 @@ natively on Apple silicon Macs and it uses the CKAN file formats.
   and a free-space check.
 - CKAN registry format in `<game>/CKAN/` (registry.json v3, registry.locked,
   installed-*.ckan, history), so CKAN and Hangar can manage the same game.
+  When another Hangar window or CKAN has the game folder open, the window
+  shows that the instance is in use and opens it when the other program
+  closes. The lock message names the program that holds the lock.
 - Mod list export (CKAN modpack .ckan, text, markdown, BBCode, CSV, TSV) and
   import of CKAN modpacks from a file or a URL.
 - Game instances (add, fake, rename, default, autodetect of Steam installs),
@@ -59,9 +34,15 @@ natively on Apple silicon Macs and it uses the CKAN file formats.
   metadata, relationships, contents and versions, a Changes tab, dialogs for
   settings, repositories, instances, labels, compatibility, history and
   unmanaged files. The window uses no CPU when it is idle.
+- Text size setting: a View menu (80% to 200%) and the keys Cmd+=, Cmd+-
+  and Cmd+0. The size is saved in `config.json` (`Hangar.text_size`). The
+  layout fits up to 200%: the toolbar goes to two rows, and dialogs are never
+  larger than the main window.
 - `bundle.sh` builds `dist/Hangar.app` (arm64, ad-hoc signed).
 
 ### Changed
 - The repo index is parsed as a stream and shares equal data between the
   versions of a mod. Memory after load went from 164 MB to 48 MB (CLI). The
   CKAN output is byte-identical.
+- Tests no longer use paths from the development machine. The live install
+  test downloads the CKAN-meta archive when `HANGAR_TEST_META` is not set.

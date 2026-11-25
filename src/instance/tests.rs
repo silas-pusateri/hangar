@@ -64,12 +64,15 @@ fn builds_parsing() {
 
 #[test]
 fn real_install_read_only() {
-    let d = Path::new("/Users/silaspusateri/Library/Application Support/Steam/steamapps/common/Kerbal Space Program");
+    // The default Steam folder on macOS; the test does nothing when KSP is not installed there.
+    let Some(home) = std::env::var_os("HOME") else { return };
+    let d = Path::new(&home).join("Library/Application Support/Steam/steamapps/common/Kerbal Space Program");
+    let d = d.as_path();
     if !d.is_dir() {
         return;
     }
     assert!(is_valid_game_dir(d));
-    assert_eq!(detect_version(d, &HashMap::new()).map(|v| v.to_string()), Some("1.12.5.3190".into()));
+    assert!(detect_version(d, &HashMap::new()).is_some());
     assert!(find_installs().iter().any(|p| p == d));
 }
 

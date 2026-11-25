@@ -532,16 +532,15 @@ fn signal_guard_defers_ctrl_c() {
 }
 
 /// Live: install ModuleManager from the real metadata over the network.
-/// Run with `cargo test live_module_manager -- --ignored`.
+/// Run with `cargo test live_module_manager -- --ignored`. `HANGAR_TEST_META` can name a local
+/// copy of the CKAN-meta archive; without it the archive is downloaded.
 #[test]
 #[ignore]
 fn live_module_manager() {
-    let meta = std::env::var("HANGAR_TEST_META").unwrap_or_else(|_| {
-        "/private/tmp/claude-501/-Users-silaspusateri-Library-Application-Support-Claude-scratch-workspaces-9a1d404b-0bff-472e-b97b-9405fc258a7c-4926490b-735f-421b-8202-6a1aedbb35f6-scratch-2026-11-24-e8ee0a/344f7332-9b92-4631-ad90-a2fca181804c/scratchpad/meta/master.tar.gz".into()
-    });
+    let uri = std::env::var("HANGAR_TEST_META").map_or_else(|_| Repository::default_repo().uri, |m| format!("file://{m}"));
     let env = Env::new("live", &[]);
     let mut s = Session::open_with(env.config(), None, LabelList::defaults(), env.root.join("repos"), false).unwrap();
-    let repo = Repository { name: "KSP-default".into(), uri: format!("file://{meta}"), priority: 0, x_mirror: false, x_comment: None };
+    let repo = Repository { name: "KSP-default".into(), uri, priority: 0, x_mirror: false, x_comment: None };
     s.set_repositories(vec![repo]).unwrap();
     assert!(s.index.module_count() > 1000);
     let msgs = std::sync::Mutex::new(0usize);
